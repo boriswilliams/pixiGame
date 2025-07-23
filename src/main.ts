@@ -1,8 +1,9 @@
 import App from "./screen/app";
 
-import BoiBuilder from "./objects/screenObjects/Boi";
-import Mouse from "./objects/functionalObjects/mouse";
-import Keyboard from "./objects/functionalObjects/keyboard";
+import Mouse from "./objects/functional/Mouse";
+import Keyboard from "./objects/functional/Keyboard";
+
+import BoiBuilder from "./objects/screen/Boi";
 
 (async () => {
   const app = await App();

@@ -1,7 +1,7 @@
 import { Texture } from 'pixi.js';
 
-import Object from './object/Object';
-import ObjectBuilder from './object/ObjectBuilder';
+import Object from './screenObject/ScreenObject';
+import ObjectBuilder from './screenObject/ScreenObjectBuilder';
 
 export class Boi extends Object {
   constructor(...textures: Texture[]) {

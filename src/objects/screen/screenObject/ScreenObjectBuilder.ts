@@ -1,6 +1,6 @@
 import { Assets } from 'pixi.js';
 
-import { ObjectConstructor } from './Object';
+import { ObjectConstructor } from './ScreenObject';
 
 export default abstract class ObjectBuilder {
   clazz: ObjectConstructor;

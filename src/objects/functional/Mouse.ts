@@ -1,11 +1,12 @@
 import { Application, Sprite } from "pixi.js";
 
-export default class Mouse {
-  app: Application;
+import FunctionalObject from "./FunctionalObject";
+
+export default class Mouse extends FunctionalObject {
   mousePos: {x: number, y: number};
 
   constructor(app: Application) {
-    this.app = app;
+    super(app);
     this.mousePos = { x: 0, y: 0 };
   }
 
