@@ -1,14 +1,12 @@
-import { Application, Assets } from 'pixi.js';
+import { Assets } from 'pixi.js';
 
 import { ObjectConstructor } from './Object';
 
 export default abstract class ObjectBuilder {
-  app: Application;
   clazz: ObjectConstructor;
   paths: string[];
 
-  constructor(app: Application, clazz: ObjectConstructor, ...paths: string[]) {
-    this.app = app;
+  constructor(clazz: ObjectConstructor, ...paths: string[]) {
     this.clazz = clazz;
     this.paths = paths;
   }
@@ -18,6 +16,6 @@ export default abstract class ObjectBuilder {
       return await Assets.load(path);
     }));
 
-    return new this.clazz(this.app, textures[0], ...textures);
+    return new this.clazz(textures[0], ...textures);
   }
 }

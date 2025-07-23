@@ -1,13 +1,11 @@
-import { Application, Sprite, Texture } from 'pixi.js';
+import { Sprite, Texture } from 'pixi.js';
 
-export type ObjectConstructor = new (app: Application, ...textures: Texture[]) => Object;
+export type ObjectConstructor = new (...textures: Texture[]) => Object;
 
 export default abstract class Object {
-  app: Application;
   sprite!: Sprite;
 
-  constructor(app: Application, ...textures: Texture[]) {
-    this.app = app;
+  constructor(...textures: Texture[]) {
     if (textures.length === 0)
       throw new Error("Trying to create an object without a sprite");
     this.setSprite(textures[0]);
