@@ -1,8 +1,8 @@
 import { Application, Sprite } from "pixi.js";
 
-import FunctionalObject from "./Object";
+import Object from "./Object";
 
-export default class Keyboard extends FunctionalObject {
+export default class Keyboard extends Object {
   keys: {[key: string]: boolean};
 
   constructor(app: Application) {

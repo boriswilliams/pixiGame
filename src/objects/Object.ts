@@ -1,6 +1,6 @@
 import { Application } from "pixi.js";
 
-export default class FunctionalObject {
+export default class Object {
   app: Application;
 
   constructor(app: Application) {

@@ -1,8 +1,8 @@
 import { Sprite, Texture } from 'pixi.js';
 
-export type ObjectConstructor = new (...textures: Texture[]) => Object;
+export type EntityConstructor = new (...textures: Texture[]) => Entity;
 
-export default abstract class Object {
+export default abstract class Entity {
   sprite!: Sprite;
 
   constructor(...textures: Texture[]) {
