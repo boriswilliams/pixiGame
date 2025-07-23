@@ -14,15 +14,21 @@ export default abstract class Entity {
     }
   }
 
+  makeSprite(texture: Texture) {
+    const sprite = new Sprite(texture);
+    sprite.scale.set(2);
+    return sprite;
+  }
+
   async setSprite(texture: Texture) {
-    this.sprite = new Sprite(texture);
+    this.sprite = this.makeSprite(texture);
     this.sprite.anchor.set(0.5);
   }
 
   async addSprite(texture: Texture) {
     if (this.sprite === undefined)
       throw new Error("Trying to add a sprite when no main sprite is set");
-    const child = new Sprite(texture);
+    const child = this.makeSprite(texture);
     this.sprite.addChild(child);
     child.position.set(-this.sprite.width / 2, -this.sprite.height / 2);
   }
