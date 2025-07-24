@@ -5,14 +5,16 @@ import Keyboard from "./objects/Keyboard";
 
 import BoiBuilder from "./entities/Boi";
 import DartBuilder from "./entities/Dart";
+import Ticker from "./objects/Ticker";
 
 (async () => {
   const app = await App();
 
   const mouse = new Mouse(app);
   const keyBoard = new Keyboard(app);
+  const ticker = new Ticker(app);
 
-  const dartBuilder = new DartBuilder();
+  const dartBuilder = new DartBuilder(ticker, 5);
   const boiBuilder = new BoiBuilder(dartBuilder);
 
   const boi = await boiBuilder.build();

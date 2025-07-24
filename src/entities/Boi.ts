@@ -28,6 +28,6 @@ export default class BoiBuilder extends EntityBuilder<Boi, [DartBuilder]> {
   }
 
   build() {
-    return super.build(this.dartBuilder);
+    return super._build(this.dartBuilder);
   }
 }

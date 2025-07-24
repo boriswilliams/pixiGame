@@ -2,12 +2,12 @@ import { Assets, Texture } from 'pixi.js';
 
 import Entity, { EntityConstructor } from './Entity';
 
-export default abstract class EntityBuilder<T extends Entity<any>, Args extends any[]> {
-  clazz: EntityConstructor<T, Args>;
+export default abstract class EntityBuilder<E extends Entity<any>, EArgs extends any[]> {
+  clazz: EntityConstructor<E, EArgs>;
   textures: Texture[] = [];
   ready: Promise<void>;
 
-  constructor(clazz: EntityConstructor<T, Args>, ...paths: string[]) {
+  constructor(clazz: EntityConstructor<E, EArgs>, ...paths: string[]) {
     this.clazz = clazz;
     
     this.ready = (async () => {
@@ -17,7 +17,7 @@ export default abstract class EntityBuilder<T extends Entity<any>, Args extends 
     })();
   }
 
-  async build(...args: Args) {
+  async _build(...args: EArgs): Promise<E> {
     await this.ready;
     return new this.clazz(...args, ...this.textures);
   }

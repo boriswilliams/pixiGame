@@ -16,7 +16,7 @@ export default abstract class Entity<_> {
 
   makeSprite(texture: Texture) {
     const sprite = new Sprite(texture);
-    sprite.scale.set(2);
+    sprite.scale.set(1);
     return sprite;
   }
 
