@@ -1,9 +1,9 @@
 import { Application } from "pixi.js";
 
-import Object from "./Object";
-import Entity from "../entities/entity/Entity";
+import { Object } from "./Object";
+import { Entity } from "../entities/entity/Entity";
 
-export default class Mouse extends Object {
+export class Mouse extends Object {
   mousePos: {x: number, y: number};
   clickHeld: boolean;
 

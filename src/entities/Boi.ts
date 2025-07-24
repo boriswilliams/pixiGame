@@ -1,37 +1,34 @@
 import { Texture } from 'pixi.js';
 
-import Entity from './entity/Entity';
-import EntityBuilder from './entity/EntityBuilder';
-import DartBuilder from './Dart';
+import { Entity } from './entity/Entity';
+import { EntityBuilder } from './entity/EntityBuilder';
+import { Gun } from './guns/Gun';
+import { Projectile } from './projectiles/Projectile';
 
-export class Boi extends Entity<[DartBuilder]> {
-  dartBuilder: DartBuilder;
+export class Boi extends Entity<[]> {
+  gun: Gun<Projectile> | undefined;
 
-  constructor(dartBuilder: DartBuilder, ...textures: Texture[]) {
+  constructor(...textures: Texture[]) {
     super(...textures);
-    this.dartBuilder = dartBuilder;
   }
 
   async shoot() {
-    const gunLength = 15;
-    const dart = await this.dartBuilder.build();
-    const x = this.sprite.x + gunLength * Math.sin(this.sprite.rotation);
-    const y = this.sprite.y - gunLength * Math.cos(this.sprite.rotation);
-    dart.sprite.position.set(x, y);
-    dart.sprite.rotation = this.sprite.rotation;
-    return dart.sprite;
+    this.gun?.shoot(this.sprite);
+  }
+
+  giveGun(gun: Gun<Projectile>) {
+    this.gun = gun;
+    this.addSprite(gun.sprite);
   }
 }
 
-export default class BoiBuilder extends EntityBuilder<Boi, [DartBuilder]> {
-  dartBuilder: DartBuilder;
+export class BoiBuilder extends EntityBuilder<Boi, []> {
   
-  constructor(dartBuilder: DartBuilder) {
-    super(Boi, '/assets/boi.png', '/assets/gun.png');
-    this.dartBuilder = dartBuilder;
+  constructor() {
+    super(Boi, '/assets/boi.png');
   }
 
   build() {
-    return super._build(this.dartBuilder);
+    return super.build();
   }
 }

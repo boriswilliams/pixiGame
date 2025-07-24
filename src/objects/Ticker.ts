@@ -1,8 +1,8 @@
 import { Application, TickerCallback } from "pixi.js";
 
-import Object from "./Object";
+import { Object } from "./Object";
 
-export default class Ticker extends Object {
+export class Ticker extends Object {
   constructor(app: Application) {
     super(app);
   }
