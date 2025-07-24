@@ -1,6 +1,7 @@
-import { Application, Sprite } from "pixi.js";
+import { Application } from "pixi.js";
 
 import Object from "./Object";
+import Entity from "../entities/entity/Entity";
 
 export default class Mouse extends Object {
   mousePos: {x: number, y: number};
@@ -16,7 +17,7 @@ export default class Mouse extends Object {
     this.app.view.addEventListener('pointerup', () => {this.clickHeld = false});
   }
 
-  lookAtMouse(sprite: Sprite) {
+  lookAtMouse(entity: Entity<any>) {
     this.app.view.addEventListener('mousemove', (event) => {
       const rect = this.app.view.getBoundingClientRect();
       this.mousePos.x = event.clientX - rect.left;
@@ -24,9 +25,9 @@ export default class Mouse extends Object {
     });
 
     this.app.ticker.add(() => {
-      const dx = this.mousePos.x - sprite.x;
-      const dy = this.mousePos.y - sprite.y;
-      sprite.rotation = Math.atan2(dy, dx) + Math.PI/2;
+      const dx = this.mousePos.x - entity.sprite.x;
+      const dy = this.mousePos.y - entity.sprite.y;
+      entity.sprite.rotation = Math.atan2(dy, dx) + Math.PI/2;
     });
   }
 

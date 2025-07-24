@@ -16,9 +16,9 @@ import DartBuilder from "./entities/Dart";
   const boiBuilder = new BoiBuilder(dartBuilder);
 
   const boi = await boiBuilder.build();
-  mouse.lookAtMouse(boi.sprite);
+  mouse.lookAtMouse(boi);
   mouse.setHoldAction(async () => app.stage.addChild(await boi.shoot()));
-  keyBoard.moveWasd(boi.sprite, 5);
+  keyBoard.moveWasd(boi, 5);
   boi.sprite.position.set(app.screen.width / 2, app.screen.height / 2);
   app.stage.addChild(boi.sprite);
   

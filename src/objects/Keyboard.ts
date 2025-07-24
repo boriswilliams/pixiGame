@@ -1,6 +1,7 @@
-import { Application, Sprite } from "pixi.js";
+import { Application } from "pixi.js";
 
 import Object from "./Object";
+import Entity from "../entities/entity/Entity";
 
 export default class Keyboard extends Object {
   keys: {[key: string]: boolean};
@@ -14,13 +15,13 @@ export default class Keyboard extends Object {
     window.addEventListener('keyup', (e) => this.keys[e.key] = false);
   }
 
-  moveWasd(sprite: Sprite, speed: number) {
+  moveWasd(entity: Entity<any>, speed: number) {
     this.app.ticker.add((time) => {
       const travel = time.deltaTime * speed;
-      if (this.keys.w) sprite.y -= travel;
-      if (this.keys.s) sprite.y += travel;
-      if (this.keys.a) sprite.x -= travel;
-      if (this.keys.d) sprite.x += travel;
+      if (this.keys.w) entity.sprite.y -= travel;
+      if (this.keys.s) entity.sprite.y += travel;
+      if (this.keys.a) entity.sprite.x -= travel;
+      if (this.keys.d) entity.sprite.x += travel;
     });
   }
 }
