@@ -1,8 +1,8 @@
 import { Sprite, Texture } from 'pixi.js';
 
-export type EntityConstructor = new (...textures: Texture[]) => Entity;
+export type EntityConstructor<T extends Entity<Args>, Args extends any[]> = new (...args: [...Args, ...Texture[]]) => T;
 
-export default abstract class Entity {
+export default abstract class Entity<_> {
   sprite!: Sprite;
 
   constructor(...textures: Texture[]) {

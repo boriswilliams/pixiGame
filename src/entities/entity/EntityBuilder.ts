@@ -1,13 +1,13 @@
 import { Assets, Texture } from 'pixi.js';
 
-import { EntityConstructor } from './Entity';
+import Entity, { EntityConstructor } from './Entity';
 
-export default abstract class EntityBuilder {
-  clazz: EntityConstructor;
+export default abstract class EntityBuilder<T extends Entity<any>, Args extends any[]> {
+  clazz: EntityConstructor<T, Args>;
   textures: Texture[] = [];
   ready: Promise<void>;
 
-  constructor(clazz: EntityConstructor, ...paths: string[]) {
+  constructor(clazz: EntityConstructor<T, Args>, ...paths: string[]) {
     this.clazz = clazz;
     
     this.ready = (async () => {
@@ -17,8 +17,8 @@ export default abstract class EntityBuilder {
     })();
   }
 
-  async build() {
+  async build(...args: Args) {
     await this.ready;
-    return new this.clazz(this.textures[0], ...this.textures);
+    return new this.clazz(...args, ...this.textures);
   }
 }
