@@ -14,6 +14,6 @@ export class DartRifle extends Gun<Dart> {
 export class DartRifleBuilder extends GunBuilder<Dart> {
   
   constructor(projectileBuilder: DartBuilder, spawner: Spawner) {
-    super(DartRifle, projectileBuilder, spawner, '/assets/gun.png');
+    super(DartRifle, projectileBuilder, spawner, '/assets/dartRifle.png');
   }
 }

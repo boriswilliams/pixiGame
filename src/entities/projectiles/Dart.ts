@@ -1,15 +1,14 @@
-import { Projectile } from './Projectile';
-import { ProjectileBuilder } from './Projectile';
 import { Tickers } from '../../objects/Tickers';
 import { Spawner } from '../../objects/Spawner';
+import { Dropping, DroppingBuilder } from './Projectile/Dropping';
 
-export class Dart extends Projectile {
+export class Dart extends Dropping {
 
 }
 
-export class DartBuilder extends ProjectileBuilder<Dart> {
+export class DartBuilder extends DroppingBuilder<Dart> {
 
-  constructor(tickers: Tickers, spawner: Spawner, speed: number, lifetime: number, deadtime: number) {
-    super(Dart, tickers, spawner, speed, lifetime, deadtime, '/assets/dart.png');
+  constructor(tickers: Tickers, spawner: Spawner, lifetime: number, deadtime: number) {
+    super(Dart, tickers, spawner, 10, lifetime, deadtime, '/assets/dart.png');
   }
 }

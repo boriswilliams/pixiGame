@@ -3,7 +3,7 @@ import { Texture } from 'pixi.js';
 import { Entity } from './entity/Entity';
 import { EntityBuilder } from './entity/EntityBuilder';
 import { Gun } from './guns/Gun';
-import { Projectile } from './projectiles/Projectile';
+import { Projectile } from './projectiles/Projectile/Projectile';
 
 export class Boi extends Entity<[]> {
   gun: Gun<Projectile> | undefined;

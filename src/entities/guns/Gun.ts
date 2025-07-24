@@ -2,7 +2,7 @@ import { Sprite, Texture } from 'pixi.js';
 
 import { Entity, EntityConstructor } from '../entity/Entity';
 import { EntityBuilder } from '../entity/EntityBuilder';
-import { ProjectileBuilder, Projectile } from '../projectiles/Projectile';
+import { ProjectileBuilder, Projectile } from '../projectiles/Projectile/Projectile';
 import { SCALE } from '../../values';
 import { Spawner } from '../../objects/Spawner';
 
