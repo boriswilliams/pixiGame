@@ -5,11 +5,12 @@ import { Mouse } from "./objects/Mouse";
 import { Keyboard } from "./objects/Keyboard";
 import { Tickers } from "./objects/Tickers";
 
-import { BoiBuilder } from "./entities/Boi";
-import { DartRifleBuilder } from "./entities/guns/DartRifle";
-import { DartBuilder } from "./entities/projectiles/Dart";
-import { LightGunBuilder } from "./entities/guns/LightGun";
-import { LightBuilder } from "./entities/projectiles/Light";
+import { BoiFactory } from "./entities/Boi";
+import { DartRifleFactory } from "./entities/guns/DartRifle";
+import { DartFactory } from "./entities/projectiles/Dart";
+import { LightGunFactory } from "./entities/guns/LightGun";
+import { LightFactory } from "./entities/projectiles/Light";
+import { Coords } from "./utils/types";
 
 (async () => {
   const app = await App();
@@ -19,20 +20,20 @@ import { LightBuilder } from "./entities/projectiles/Light";
   const keyboard = new Keyboard(app);
   const tickers = new Tickers(app);
 
-  const dartBuilder = new DartBuilder(tickers, spawner, 1, 0.1);
-  const dartRifleBuilder = new DartRifleBuilder(dartBuilder, spawner);
+  const dartFactory = new DartFactory(tickers, spawner, 1);
+  const dartRifleFactory = new DartRifleFactory(dartFactory, spawner);
 
-  const lightBuilder = new LightBuilder(tickers);
-  const lightGunBuilder = new LightGunBuilder(lightBuilder, spawner);
+  const lightFactory = new LightFactory(tickers);
+  const lightGunFactory = new LightGunFactory(lightFactory, spawner);
 
-  const boiBuilder = new BoiBuilder();
+  const boiFactory = new BoiFactory();
 
-  const boi = await boiBuilder.build();
+  const boi = await boiFactory.build();
   keyboard.moveWasd(boi, 6);
   mouse.lookAtMouse(boi);
-  boi.giveGun(await lightGunBuilder.build());
+  boi.giveGun(await lightGunFactory.build());
 
-  mouse.setHoldAction(() => boi.shoot());
+  mouse.setHoldAction((location: Coords) => boi.shoot(location));
   
   boi.sprite.position.set(app.screen.width / 2, app.screen.height / 2);
   spawner.add(boi);

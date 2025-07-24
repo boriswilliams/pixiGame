@@ -1,14 +1,18 @@
 import { Tickers } from '../../objects/Tickers';
 import { Spawner } from '../../objects/Spawner';
-import { Dropping, DroppingBuilder } from './Projectile/Dropping';
+import { Dropping, DroppingFactory } from './Projectile/Dropping';
+import { Coords } from '../../utils/types';
 
-export class Dart extends Dropping {
+export class Dart extends Dropping<Dart> {
 
 }
 
-export class DartBuilder extends DroppingBuilder<Dart> {
+export class DartFactory extends DroppingFactory<Dart, []> {
+  constructor(tickers: Tickers, spawner: Spawner, deadtime: number) {
+    super(Dart, tickers, spawner, 10, deadtime, '/assets/dart.png');
+  }
 
-  constructor(tickers: Tickers, spawner: Spawner, lifetime: number, deadtime: number) {
-    super(Dart, tickers, spawner, 10, lifetime, deadtime, '/assets/dart.png');
+  async build(spawn: Coords) {
+    return await super.buildDropping(spawn);
   }
 }

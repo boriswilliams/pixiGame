@@ -1,22 +1,25 @@
-import {  Ticker } from 'pixi.js';
+import {  Texture, Ticker } from 'pixi.js';
 
 import { Tickers } from '../../../objects/Tickers';
-import { Projectile, ProjectileBuilder, ProjectileConstructor } from './Projectile';
+import { Projectile, ProjectileAnimation, ProjectileFactory } from './Projectile';
+import { Class } from '../../utils/Class';
 
-export type HorizontalConstructor<H extends Horizontal> = ProjectileConstructor<H>;
+export abstract class Horizontal<H extends Horizontal<H>> extends Projectile<H> {
 
-export class Horizontal extends Projectile {
-
+  constructor(projectileAnimation: ProjectileAnimation<H>, ...texture: Texture[]) {
+    super(projectileAnimation, ...texture);
+  }
 }
 
-export class HorizontalBuilder<H extends Horizontal> extends ProjectileBuilder<H> {
-  constructor(
-    clazz: HorizontalConstructor<H>,
+export abstract class HorizontalFactory<H extends Horizontal<H>, A extends any[]> extends ProjectileFactory<H, A> {
+
+  protected constructor(
+    horizontal: Class<H>,
     tickers: Tickers,
     speed: number,
     ...paths: string[]
   ) {
-    const projectileAnimation = (projectile: Horizontal) => {
+    const projectileAnimation = (projectile: Horizontal<H>) => {
       const movement = (ticker: Ticker) => {
         const travel = ticker.deltaTime * speed;
         projectile.sprite.y -= travel * Math.cos(projectile.sprite.rotation);
@@ -24,6 +27,10 @@ export class HorizontalBuilder<H extends Horizontal> extends ProjectileBuilder<H
       }
       tickers.add(movement);
     }
-    super(clazz, projectileAnimation, ...paths);
+    super(horizontal, projectileAnimation, ...paths);
+  }
+
+  protected async buildHorizontal(...args: A) {
+    return await super.buildProjectile(...args);
   }
 }

@@ -1,19 +1,23 @@
 import { Texture } from 'pixi.js';
 
-import { GunBuilder, Gun } from './Gun';
-import { DartBuilder, Dart } from '../projectiles/Dart';
+import { GunFactory, Gun } from './Gun';
+import { DartFactory, Dart } from '../projectiles/Dart';
 import { Spawner } from '../../objects/Spawner';
 
 export class DartRifle extends Gun<Dart> {
 
-  constructor(projectileBuilder: DartBuilder, spawner: Spawner, ...textures: Texture[]) {
-    super(projectileBuilder, spawner, 15, ...textures);
+  constructor(projectileFactory: DartFactory, spawner: Spawner, ...textures: Texture[]) {
+    super(projectileFactory, spawner, 15, ...textures);
   }
 }
 
-export class DartRifleBuilder extends GunBuilder<Dart> {
+export class DartRifleFactory extends GunFactory<DartRifle, []> {
   
-  constructor(projectileBuilder: DartBuilder, spawner: Spawner) {
-    super(DartRifle, projectileBuilder, spawner, '/assets/dartRifle.png');
+  constructor(projectileFactory: DartFactory, spawner: Spawner) {
+    super(DartRifle, projectileFactory, spawner, '/assets/dartRifle.png');
+  }
+
+  async build() {
+    return await super.buildGun();
   }
 }

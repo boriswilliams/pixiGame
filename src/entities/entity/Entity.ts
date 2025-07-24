@@ -2,9 +2,7 @@ import { Sprite, Texture } from 'pixi.js';
 
 import { SCALE } from '../../values';
 
-export type EntityConstructor<E extends Entity<Args>, Args extends any[]> = new (...args: [...Args, ...Texture[]]) => E;
-
-export abstract class Entity<_> {
+export abstract class Entity {
   sprite!: Sprite;
 
   protected constructor(...textures: Texture[]) {

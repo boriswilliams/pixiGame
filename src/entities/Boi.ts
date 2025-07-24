@@ -1,34 +1,35 @@
 import { Texture } from 'pixi.js';
 
 import { Entity } from './entity/Entity';
-import { EntityBuilder } from './entity/EntityBuilder';
 import { Gun } from './guns/Gun';
 import { Projectile } from './projectiles/Projectile/Projectile';
+import { Factory } from './entity/Factory';
+import { Coords } from '../utils/types';
 
-export class Boi extends Entity<[]> {
-  gun: Gun<Projectile> | undefined;
+export class Boi extends Entity {
+  gun: Gun<Projectile<any>> | undefined;
 
   constructor(...textures: Texture[]) {
     super(...textures);
   }
 
-  async shoot() {
-    this.gun?.shoot(this.sprite);
+  async shoot(mouseLocation: Coords) {
+    this.gun?.shoot(this.sprite, mouseLocation);
   }
 
-  giveGun(gun: Gun<Projectile>) {
+  giveGun(gun: Gun<Projectile<any>>) {
     this.gun = gun;
     this.addSprite(gun.sprite);
   }
 }
 
-export class BoiBuilder extends EntityBuilder<Boi, []> {
+export class BoiFactory extends Factory<Boi, []> {
   
   constructor() {
     super(Boi, '/assets/boi.png');
   }
 
-  build() {
-    return super.build();
+  async build() {
+    return await super.buildEntity();
   }
 }

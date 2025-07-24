@@ -2,9 +2,10 @@ import { Application } from "pixi.js";
 
 import { Object } from "./Object";
 import { Entity } from "../entities/entity/Entity";
+import { Coords } from "../utils/types";
 
 export class Mouse extends Object {
-  mousePos: {x: number, y: number};
+  mousePos: Coords;
   clickHeld: boolean;
 
   constructor(app: Application) {
@@ -17,7 +18,7 @@ export class Mouse extends Object {
     this.app.view.addEventListener('pointerup', () => {this.clickHeld = false});
   }
 
-  lookAtMouse(entity: Entity<any>) {
+  lookAtMouse(entity: Entity) {
     this.app.view.addEventListener('mousemove', (event) => {
       const rect = this.app.view.getBoundingClientRect();
       this.mousePos.x = event.clientX - rect.left;
@@ -31,10 +32,10 @@ export class Mouse extends Object {
     });
   }
 
-  setHoldAction(func: () => void) {
+  setHoldAction(func: (mousePos: Coords) => void) {
     this.app.ticker.add(() => {
       if (this.clickHeld)
-        func();
+        func({...this.mousePos});
     });
   }
 }

@@ -1,29 +1,32 @@
 import { Texture } from 'pixi.js';
 
-import { Entity, EntityConstructor } from '../../entity/Entity';
-import { EntityBuilder } from '../../entity/EntityBuilder';
+import { Entity } from '../../entity/Entity';
+import { Factory } from '../../entity/Factory';
+import { Class } from '../../utils/Class';
 
-export type ProjectileConstructor<P extends Projectile> = EntityConstructor<P, [ProjectileAnimation, ...Texture[]]>;
+export type ProjectileAnimation<P extends Projectile<P>> = (x: P) => void;
 
-export type ProjectileAnimation = (x: Projectile) => void;
+export abstract class Projectile<P extends Projectile<P>> extends Entity {
 
-export class Projectile extends Entity<[ProjectileAnimation]> {
-
-  constructor(projectileAnimation: ProjectileAnimation, ...textures: Texture[]) {
-    super(...textures);
-    projectileAnimation(this);
+  protected constructor(projectileAnimation: ProjectileAnimation<P>, ...texture: Texture[]) {
+    super(...texture);
+    projectileAnimation(this as unknown as P);
   }
 }
 
-export class ProjectileBuilder<P extends Projectile> extends EntityBuilder<P, [ProjectileAnimation]> {
-  projectileAnimation: ProjectileAnimation;
+export abstract class ProjectileFactory<P extends Projectile<P>, A extends any[]> extends Factory<P, [ProjectileAnimation<P>, ...A]> {
+  protected projectileAnimation: ProjectileAnimation<P>;
 
-  constructor(clazz: EntityConstructor<P, [ProjectileAnimation, ...Texture[]]>, projectileAnimation: ProjectileAnimation, ...paths: string[]) {
-    super(clazz, ...paths);
+  protected constructor(
+    projectile: Class<P>,
+    projectileAnimation: ProjectileAnimation<P>,
+    ...paths: string[]
+  ) {
+    super(projectile, ...paths);
     this.projectileAnimation = projectileAnimation;
   }
 
-  build() {
-    return super.build(this.projectileAnimation);
+  protected async buildProjectile(...args: A) {
+    return await super.buildEntity(this.projectileAnimation, ...args);
   }
 }
