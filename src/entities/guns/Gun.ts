@@ -3,6 +3,7 @@ import { Application, Sprite, Texture } from 'pixi.js';
 import { Entity, EntityConstructor } from '../entity/Entity';
 import { EntityBuilder } from '../entity/EntityBuilder';
 import { ProjectileBuilder, Projectile } from '../projectiles/Projectile';
+import { SCALE } from '../../values';
 
 export type GunConstructor<P extends Projectile, Args extends any[]> = EntityConstructor<Gun<P>, [ProjectileBuilder<P>, Application, ...Args, ...Texture[]]>;
 
@@ -15,7 +16,7 @@ export abstract class Gun<P extends Projectile> extends Entity<Gun<P>> {
     super(...textures);
     this.projectileBuilder = projectileBuilder;
     this.app = app;
-    this.gunLength = gunLength;
+    this.gunLength = gunLength * SCALE;
   }
 
   async shoot(parent: Sprite) {
