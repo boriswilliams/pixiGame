@@ -14,13 +14,13 @@ import Ticker from "./objects/Ticker";
   const keyBoard = new Keyboard(app);
   const ticker = new Ticker(app);
 
-  const dartBuilder = new DartBuilder(ticker, 5);
+  const dartBuilder = new DartBuilder(ticker, 10);
   const boiBuilder = new BoiBuilder(dartBuilder);
 
   const boi = await boiBuilder.build();
   mouse.lookAtMouse(boi);
   mouse.setHoldAction(async () => app.stage.addChild(await boi.shoot()));
-  keyBoard.moveWasd(boi, 5);
+  keyBoard.moveWasd(boi, 3);
   boi.sprite.position.set(app.screen.width / 2, app.screen.height / 2);
   app.stage.addChild(boi.sprite);
   

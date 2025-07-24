@@ -13,8 +13,12 @@ export class Boi extends Entity<[DartBuilder]> {
   }
 
   async shoot() {
+    const gunLength = 15;
     const dart = await this.dartBuilder.build();
-    dart.sprite.position.set(this.sprite.x, this.sprite.y);
+    const x = this.sprite.x + gunLength * Math.sin(this.sprite.rotation);
+    const y = this.sprite.y - gunLength * Math.cos(this.sprite.rotation);
+    dart.sprite.position.set(x, y);
+    dart.sprite.rotation = this.sprite.rotation;
     return dart.sprite;
   }
 }

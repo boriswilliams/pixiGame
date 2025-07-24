@@ -22,7 +22,8 @@ export default class DartBuilder extends EntityBuilder<Dart, [AddMovementTicker]
     this.addMovementTicker = (dart: Dart) => {
       ticker.add((time) => {
         const travel = time.deltaTime * speed;
-        dart.sprite.y -= travel;
+        dart.sprite.y -= travel * Math.cos(dart.sprite.rotation);
+        dart.sprite.x += travel * Math.sin(dart.sprite.rotation);
       });
     }
   }

@@ -17,7 +17,7 @@ export default abstract class EntityBuilder<E extends Entity<any>, EArgs extends
     })();
   }
 
-  async _build(...args: EArgs): Promise<E> {
+  protected async _build(...args: EArgs): Promise<E> {
     await this.ready;
     return new this.clazz(...args, ...this.textures);
   }
