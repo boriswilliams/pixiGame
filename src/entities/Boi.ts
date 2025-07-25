@@ -13,10 +13,18 @@ export class Boi extends Entity {
     super(...textures);
   }
 
-  async shoot(mouseLocation: Coords) {
+  shoot(mouseLocation: Coords) {
     this.gun?.shoot(this.sprite, mouseLocation);
   }
 
+  stopShooting() {
+    this.gun?.stop();
+  }
+
+  getShooter() {
+    return [(mouseLocation: Coords) => this.shoot(mouseLocation), () => this.stopShooting()]
+  }
+  
   giveGun(gun: Gun<Projectile<any>>) {
     this.gun = gun;
     this.addSprite(gun.sprite);

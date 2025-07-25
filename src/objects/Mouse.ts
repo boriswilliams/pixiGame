@@ -8,6 +8,7 @@ import { coordsAngle } from "../utils/math";
 export class Mouse extends Object {
   mousePos: Coords;
   clickHeld: boolean;
+  holdAction: (() => void) | undefined;
 
   constructor(app: Application) {
     super(app);
@@ -35,10 +36,19 @@ export class Mouse extends Object {
     });
   }
 
-  setHoldAction(func: (mousePos: Coords) => void) {
-    this.app.ticker.add(() => {
+  setHoldAction(start: (mousePos: Coords) => void, stop: () => void) {
+    this.removeHoldAction();
+    this.holdAction = () => {
       if (this.clickHeld)
-        func({...this.mousePos});
-    });
+        start({...this.mousePos});
+      else
+        stop();
+    }
+    this.app.ticker.add(this.holdAction);
+  }
+
+  removeHoldAction() {
+    if (this.holdAction)
+      this.app.ticker.remove(this.holdAction);
   }
 }

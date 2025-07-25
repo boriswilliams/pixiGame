@@ -7,7 +7,12 @@ import { Spawner } from '../../objects/Spawner';
 export class LightGun extends Gun<Light> {
 
   constructor(projectileFactory: LightFactory, spawner: Spawner, ...textures: Texture[]) {
-    super(projectileFactory, spawner, 15, 0, ...textures);
+    super(projectileFactory, spawner,
+      15, // gunLength
+      0, // variance
+      25, // fireGap
+      1, // shots
+      ...textures);
   }
 }
 

@@ -14,13 +14,18 @@ export abstract class Gun<P extends Projectile<P>> extends Entity {
   spawner: Spawner;
   gunLength: number;
   private variance: number;
+  private lastShot: number | undefined;
+  private fireGap: number;
+  private shots: number;
 
-  protected constructor(projectileFactory: ProjectileFactory<P, any>, spawner: Spawner, gunLength: number, variance: number, ...textures: Texture[]) {
+  protected constructor(projectileFactory: ProjectileFactory<P, any>, spawner: Spawner, gunLength: number, variance: number, fireGap: number, shots: number, ...textures: Texture[]) {
     super(...textures);
     this.projectileFactory = projectileFactory;
     this.spawner = spawner;
     this.gunLength = gunLength * SCALE;
     this.variance = variance;
+    this.fireGap = fireGap;
+    this.shots = shots;
   }
 
   private applyVariance(mouse: Coords, dist: number) {
@@ -33,13 +38,25 @@ export abstract class Gun<P extends Projectile<P>> extends Entity {
   }
 
   async shoot(parent: Sprite, mouseLocation: Coords) {
+    if (this.lastShot && Date.now() < this.lastShot + this.fireGap)
+      return;
+    if (this.lastShot)
+      this.lastShot += this.fireGap;
+    else
+      this.lastShot = Date.now();
     const x = parent.x + this.gunLength * Math.sin(parent.rotation);
     const y = parent.y - this.gunLength * Math.cos(parent.rotation);
     const spawn = {x: x, y: y};
-    const projectile = await this.projectileFactory.build(spawn, this.applyVariance(mouseLocation, distance(spawn, mouseLocation)));
-    projectile.sprite.position.set(x, y);
-    projectile.sprite.rotation = parent.rotation;
-    this.spawner.add(projectile)
+    for (let _ = 0; _ < this.shots; _++) {
+      const projectile = await this.projectileFactory.build(spawn, this.applyVariance(mouseLocation, distance(spawn, mouseLocation)));
+      projectile.sprite.position.set(x, y);
+      projectile.sprite.rotation = parent.rotation;
+      this.spawner.add(projectile)
+    }
+  }
+
+  stop() {
+    this.lastShot = undefined;
   }
 }
 

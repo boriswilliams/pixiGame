@@ -32,7 +32,7 @@ export abstract class DroppingFactory<D extends Dropping<D>, A extends any[]> ex
         }
         const travelled = distance(oldCoords, projectile.destination);
 
-        const x = 1 + projectile.distance / 100;
+        const x = 1 + projectile.distance / 1000;
         const scale = 1 + x * trajectory(travelled / projectile.distance);
         projectile.sprite.scale = scale;
 

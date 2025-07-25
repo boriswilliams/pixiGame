@@ -38,7 +38,7 @@ import { PelletFactory } from "./entities/projectiles/Pellet";
   mouse.lookAtMouse(boi);
   boi.giveGun(await dartRifleFactory.build());
 
-  mouse.setHoldAction((location: Coords) => boi.shoot(location));
+  mouse.setHoldAction((mouseLocation: Coords) => boi.shoot(mouseLocation), () => boi.stopShooting());
   
   boi.sprite.position.set(app.screen.width / 2, app.screen.height / 2);
   spawner.add(boi);
