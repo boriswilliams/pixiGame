@@ -1,9 +1,11 @@
 import { Sprite, Texture } from 'pixi.js';
 
 import { SCALE } from '../../values';
+import { Controller } from '../../objects/controllers/Controller';
 
 export abstract class Entity {
   sprite!: Sprite;
+  controller: Controller | undefined;
 
   protected constructor(...textures: Texture[]) {
     if (textures.length === 0)
@@ -35,5 +37,21 @@ export abstract class Entity {
       throw new Error("Trying to add a sprite when no main sprite is set");
     const child = this.makeSprite(texture);
     this.addSprite(child);
+  }
+
+  addController(controller: Controller) {
+    if (this.controller) {
+      throw new Error("Controller already exists");
+    }
+    controller.assign(this);
+    this.controller = controller;
+  }
+
+  removeController() {
+    if (!this.controller) {
+      throw new Error("Trying to remove controller that doesn't exist");
+    }
+    this.controller.remove(this);
+    this.controller = undefined;
   }
 }

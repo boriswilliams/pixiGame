@@ -10,4 +10,6 @@ export abstract class Controller extends Object {
   }
 
   abstract assign(entity: Entity): void;
+  
+  abstract remove(entity: Entity): void;
 }

@@ -16,6 +16,18 @@ import { LightGunFactory } from "./entities/guns/LightGun";
 import { LightFactory } from "./entities/projectiles/Light";
 import { BBGunFactory } from "./entities/guns/BBGun";
 import { PelletFactory } from "./entities/projectiles/Pellet";
+import { BotController } from "./objects/controllers/BotController";
+import { Application } from "pixi.js";
+import { GunFactory } from "./entities/guns/Gun";
+
+async function spawnEnemy(factory: BoiFactory, app: Application, spawner: Spawner, gunFactory: GunFactory<any, any>) {
+  const enemy = await factory.build();
+  enemy.addController(new BotController(app));
+  enemy.giveGun(await gunFactory.build());
+  
+  enemy.sprite.position.set(app.screen.width / 2, app.screen.height / 2);
+  spawner.add(enemy);
+}
 
 (async () => {
   const app = await App();
@@ -41,10 +53,13 @@ import { PelletFactory } from "./entities/projectiles/Pellet";
   const boi = await boiFactory.build();
   playerController.assign(boi);
   boi.giveGun(await dartRifleFactory.build());
-
-  mouse.setHoldAction((mouseLocation: Coords) => boi.shoot(mouseLocation), () => boi.stopShooting());
   
   boi.sprite.position.set(app.screen.width / 2, app.screen.height / 2);
   spawner.add(boi);
-  
+
+  for (let _ = 0; _ < 10; _++) {
+    spawnEnemy(boiFactory, app, spawner, dartRifleFactory);
+    spawnEnemy(boiFactory, app, spawner, bBGunFactory);
+    spawnEnemy(boiFactory, app, spawner, lightGunFactory);
+  }
 })();

@@ -10,6 +10,12 @@ export function angle(dy: number, dx: number) {
   return Math.atan2(dy, dx) + Math.PI/2;
 }
 
+export const randomAngle = () => Math.random() * Math.PI * 2;
+
+export function randomBool(x: number) {
+  return Math.random() < x;
+}
+
 // Coords
 
 export const diffXY = (a: Coords, b: Coords) => ({
