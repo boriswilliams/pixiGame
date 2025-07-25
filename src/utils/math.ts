@@ -1,5 +1,7 @@
 import { Coords } from "./types";
 
+export const exponentialRandom = () => -Math.log(1 - Math.random());
+
 export function pythag(x: number, y: number) {
   return Math.sqrt(x**2 + y**2)
 }
@@ -33,3 +35,8 @@ export function coordsAngle(a: Coords, b: Coords) {
   const { dx, dy } = diffXY(a, b);
   return angle(dy, dx);
 }
+
+export const angleCoords = (a: number) => ({
+  x: Math.sin(a),
+  y: Math.cos(a)
+})

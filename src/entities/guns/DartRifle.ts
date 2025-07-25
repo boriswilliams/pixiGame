@@ -7,7 +7,7 @@ import { Spawner } from '../../objects/Spawner';
 export class DartRifle extends Gun<Dart> {
 
   constructor(projectileFactory: DartFactory, spawner: Spawner, ...textures: Texture[]) {
-    super(projectileFactory, spawner, 15, ...textures);
+    super(projectileFactory, spawner, 15, 5, ...textures);
   }
 }
 

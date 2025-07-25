@@ -11,6 +11,8 @@ import { DartFactory } from "./entities/projectiles/Dart";
 import { LightGunFactory } from "./entities/guns/LightGun";
 import { LightFactory } from "./entities/projectiles/Light";
 import { Coords } from "./utils/types";
+import { BBGunFactory } from "./entities/guns/BBGun";
+import { PelletFactory } from "./entities/projectiles/Pellet";
 
 (async () => {
   const app = await App();
@@ -22,6 +24,9 @@ import { Coords } from "./utils/types";
 
   const dartFactory = new DartFactory(tickers, spawner, 1);
   const dartRifleFactory = new DartRifleFactory(dartFactory, spawner);
+
+  const pelletFactory = new PelletFactory(tickers, spawner, 0.1);
+  const bBGunFactory = new BBGunFactory(pelletFactory, spawner);
 
   const lightFactory = new LightFactory(tickers);
   const lightGunFactory = new LightGunFactory(lightFactory, spawner);
