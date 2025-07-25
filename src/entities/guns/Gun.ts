@@ -23,7 +23,7 @@ export abstract class Gun<P extends Projectile<P>> extends Entity {
   async shoot(parent: Sprite, mouseLocation: Coords) {
     const x = parent.x + this.gunLength * Math.sin(parent.rotation);
     const y = parent.y - this.gunLength * Math.cos(parent.rotation);
-    const projectile = await this.projectileFactory.build(mouseLocation);
+    const projectile = await this.projectileFactory.build({x: parent.x, y: parent.y}, mouseLocation);
     projectile.sprite.position.set(x, y);
     projectile.sprite.rotation = parent.rotation;
     this.spawner.add(projectile)

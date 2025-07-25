@@ -3,11 +3,12 @@ import {  Texture, Ticker } from 'pixi.js';
 import { Tickers } from '../../../objects/Tickers';
 import { Projectile, ProjectileAnimation, ProjectileFactory } from './Projectile';
 import { Class } from '../../utils/Class';
+import { Coords } from '../../../utils/types';
 
 export abstract class Horizontal<H extends Horizontal<H>> extends Projectile<H> {
 
-  constructor(projectileAnimation: ProjectileAnimation<H>, ...texture: Texture[]) {
-    super(projectileAnimation, ...texture);
+  constructor(projectileAnimation: ProjectileAnimation<H>, spawn: Coords, destination: Coords, ...texture: Texture[]) {
+    super(projectileAnimation, spawn, destination, ...texture);
   }
 }
 
@@ -30,7 +31,7 @@ export abstract class HorizontalFactory<H extends Horizontal<H>, A extends any[]
     super(horizontal, projectileAnimation, ...paths);
   }
 
-  protected async buildHorizontal(...args: A) {
-    return await super.buildProjectile(...args);
+  protected async buildHorizontal(spawn: Coords, destination: Coords, ...args: A) {
+    return await super.buildProjectile(spawn, destination, ...args);
   }
 }

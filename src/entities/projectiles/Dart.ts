@@ -12,7 +12,7 @@ export class DartFactory extends DroppingFactory<Dart, []> {
     super(Dart, tickers, spawner, 10, deadtime, '/assets/dart.png');
   }
 
-  async build(spawn: Coords) {
-    return await super.buildDropping(spawn);
+  async build(spawn: Coords, destination: Coords) {
+    return await super.buildDropping(spawn, destination);
   }
 }

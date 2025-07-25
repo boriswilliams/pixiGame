@@ -4,6 +4,32 @@ export function pythag(x: number, y: number) {
   return Math.sqrt(x**2 + y**2)
 }
 
+export function angle(dy: number, dx: number) {
+  return Math.atan2(dy, dx) + Math.PI/2;
+}
+
+// Coords
+
+export const diffXY = (a: Coords, b: Coords) => ({
+  dx: a.x - b.x,
+  dy: a.y - b.y
+});
+
 export function distance(a: Coords, b: Coords) {
-  return pythag(a.x - b.x, a.y - b.y);
+  const { dy, dx } = diffXY(a, b);
+  return pythag(dx, dy);
+}
+
+export function ratioXY(a: Coords, b: Coords) {
+  const { dx, dy } = diffXY(a, b);
+  const z = Math.abs(dx) + Math.abs(dy);
+  return {
+    rx: dx / z,
+    ry: dy / z
+  }
+}
+
+export function coordsAngle(a: Coords, b: Coords) {
+  const { dx, dy } = diffXY(a, b);
+  return angle(dy, dx);
 }

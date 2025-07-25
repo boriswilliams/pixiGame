@@ -3,22 +3,18 @@ import {  Texture, Ticker } from 'pixi.js';
 import { Tickers } from '../../../objects/Tickers';
 import { Spawner } from '../../../objects/Spawner';
 import { Projectile, ProjectileAnimation, ProjectileFactory } from './Projectile';
-import { distance } from '../../../utils/math';
-import { Coords } from '../../../utils/types';
+import { distance, ratioXY } from '../../../utils/math';
 import { Class } from '../../utils/Class';
+import { Coords } from '../../../utils/types';
 
 export abstract class Dropping<D extends Dropping<D>> extends Projectile<D> {
-  spawn: Coords;
-  destination: Coords;
 
-  constructor(projectileAnimation: ProjectileAnimation<D>, destination: Coords, ...textures: Texture[]) {
-    super(projectileAnimation, ...textures);
-    this.spawn = {x: this.sprite.x, y: this.sprite.y};
-    this.destination = destination;
+  constructor(projectileAnimation: ProjectileAnimation<D>, spawn: Coords, destination: Coords, ...textures: Texture[]) {
+    super(projectileAnimation, spawn, destination, ...textures);
   }
 }
 
-export abstract class DroppingFactory<D extends Dropping<D>, A extends any[]> extends ProjectileFactory<D, [Coords, ...A]> {
+export abstract class DroppingFactory<D extends Dropping<D>, A extends any[]> extends ProjectileFactory<D, A> {
 
   protected constructor(
     dropping: Class<D>,
@@ -30,17 +26,17 @@ export abstract class DroppingFactory<D extends Dropping<D>, A extends any[]> ex
   ) {
     const projectileAnimation = (projectile: D) => {
       const movement = (ticker: Ticker) => {
-        const travel = ticker.deltaTime * speed;
+        const travel = ticker.deltaTime * speed * (0.3 + distance(projectile.destination, projectile.spawn)/150);
         const oldCoords = {
           x: projectile.sprite.x,
           y: projectile.sprite.y
         }
+        const { rx, ry } = ratioXY(projectile.destination, projectile.spawn);
         const newCoords = {
-          x: oldCoords.x + travel * Math.sin(projectile.sprite.rotation),
-          y: oldCoords.y - travel * Math.cos(projectile.sprite.rotation)
+          x: oldCoords.x + travel * rx,
+          y: oldCoords.y + travel * ry
         }
-        console.log(newCoords, oldCoords, projectile.destination);
-        if (distance(newCoords, projectile.destination) > distance(projectile.sprite, projectile.destination)) {
+        if (distance(newCoords, projectile.destination) > distance(oldCoords, projectile.destination)) {
           tickers.remove(movement)
           setTimeout(() => spawner.remove(projectile), deadtime * 1000);
           return;
@@ -53,7 +49,7 @@ export abstract class DroppingFactory<D extends Dropping<D>, A extends any[]> ex
     super(dropping, projectileAnimation, ...paths);
   }
 
-  protected async buildDropping(...args: [Coords, ...A]) {
-    return await super.buildProjectile(...args);
+  protected async buildDropping(spawn: Coords, destination: Coords, ...args: A) {
+    return await super.buildProjectile(spawn, destination, ...args);
   }
 }

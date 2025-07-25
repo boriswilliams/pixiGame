@@ -3,6 +3,7 @@ import { Application } from "pixi.js";
 import { Object } from "./Object";
 import { Entity } from "../entities/entity/Entity";
 import { Coords } from "../utils/types";
+import { coordsAngle } from "../utils/math";
 
 export class Mouse extends Object {
   mousePos: Coords;
@@ -18,6 +19,10 @@ export class Mouse extends Object {
     this.app.view.addEventListener('pointerup', () => {this.clickHeld = false});
   }
 
+  protected angleToMouse(location: Coords) {
+    return coordsAngle(this.mousePos, location);
+  }
+
   lookAtMouse(entity: Entity) {
     this.app.view.addEventListener('mousemove', (event) => {
       const rect = this.app.view.getBoundingClientRect();
@@ -26,9 +31,7 @@ export class Mouse extends Object {
     });
 
     this.app.ticker.add(() => {
-      const dx = this.mousePos.x - entity.sprite.x;
-      const dy = this.mousePos.y - entity.sprite.y;
-      entity.sprite.rotation = Math.atan2(dy, dx) + Math.PI/2;
+      entity.sprite.rotation = this.angleToMouse(entity.sprite);
     });
   }
 
