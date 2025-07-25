@@ -3,7 +3,7 @@ import {  Texture, Ticker } from 'pixi.js';
 import { Tickers } from '../../../objects/Tickers';
 import { Spawner } from '../../../objects/Spawner';
 import { Projectile, ProjectileAnimation, ProjectileFactory } from './Projectile';
-import { distance, ratioXY } from '../../../utils/math';
+import { distance, ratioXY, trajectory } from '../../../utils/math';
 import { Class } from '../../utils/Class';
 import { Coords } from '../../../utils/types';
 
@@ -26,17 +26,23 @@ export abstract class DroppingFactory<D extends Dropping<D>, A extends any[]> ex
   ) {
     const projectileAnimation = (projectile: D) => {
       const movement = (ticker: Ticker) => {
-        const travel = ticker.deltaTime * speed * (0.3 + distance(projectile.destination, projectile.spawn)/150);
         const oldCoords = {
           x: projectile.sprite.x,
           y: projectile.sprite.y
         }
+        const travelled = distance(oldCoords, projectile.destination);
+
+        const x = 1 + projectile.distance / 100;
+        const scale = 1 + x * trajectory(travelled / projectile.distance);
+        projectile.sprite.scale = scale;
+
+        const travel = ticker.deltaTime * speed * (0.3 + projectile.distance/150);
         const { rx, ry } = ratioXY(projectile.destination, projectile.spawn);
         const newCoords = {
           x: oldCoords.x + travel * rx,
           y: oldCoords.y + travel * ry
         }
-        if (distance(newCoords, projectile.destination) > distance(oldCoords, projectile.destination)) {
+        if (distance(newCoords, projectile.destination) > travelled) {
           tickers.remove(movement)
           setTimeout(() => spawner.remove(projectile), deadtime * 1000);
           return;

@@ -36,7 +36,7 @@ import { PelletFactory } from "./entities/projectiles/Pellet";
   const boi = await boiFactory.build();
   keyboard.moveWasdRelative(boi, 6);
   mouse.lookAtMouse(boi);
-  boi.giveGun(await bBGunFactory.build());
+  boi.giveGun(await dartRifleFactory.build());
 
   mouse.setHoldAction((location: Coords) => boi.shoot(location));
   

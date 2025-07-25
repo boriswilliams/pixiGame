@@ -40,3 +40,11 @@ export const angleCoords = (a: number) => ({
   x: Math.sin(a),
   y: Math.cos(a)
 })
+
+// Trajectory
+
+const peak = (1/3)**(1/2)-(1/3)**(3/2);
+
+export function trajectory(x: number) {
+  return (x-x**3)/peak
+}

@@ -4,18 +4,21 @@ import { Entity } from '../../entity/Entity';
 import { Factory } from '../../entity/Factory';
 import { Class } from '../../utils/Class';
 import { Coords } from '../../../utils/types';
+import { distance } from '../../../utils/math';
 
 export type ProjectileAnimation<P extends Projectile<P>> = (x: P) => void;
 
 export abstract class Projectile<P extends Projectile<P>> extends Entity {
   spawn: Coords;
   destination: Coords;
+  distance: number;
 
   protected constructor(projectileAnimation: ProjectileAnimation<P>, spawn: Coords, destination: Coords, ...texture: Texture[]) {
     super(...texture);
     this.spawn = spawn;
     this.destination = destination;
     projectileAnimation(this as unknown as P);
+    this.distance = distance(this.destination, this.spawn)
   }
 }
 
