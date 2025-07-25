@@ -16,6 +16,8 @@ export function randomBool(x: number) {
   return Math.random() < x;
 }
 
+export const minMax = (x: number, y: number, z: number) => Math.max(x, Math.min(y, z))
+
 // Coords
 
 export const diffXY = (a: Coords, b: Coords) => ({
@@ -44,7 +46,7 @@ export function coordsAngle(a: Coords, b: Coords) {
 
 export const angleCoords = (a: number) => ({
   x: Math.sin(a),
-  y: Math.cos(a)
+  y: -Math.cos(a)
 })
 
 // Trajectory

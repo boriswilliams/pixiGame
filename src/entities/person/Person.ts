@@ -13,8 +13,8 @@ export class Person extends Entity {
     super(...textures);
   }
 
-  shoot(mouseLocation: Coords) {
-    this.gun?.shoot(this.sprite, mouseLocation);
+  shoot(location: Coords) {
+    this.gun?.shoot(this.sprite, location);
   }
 
   stopShooting() {

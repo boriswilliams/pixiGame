@@ -8,11 +8,12 @@ export class Spawner extends Object {
     super(app);
   }
 
-  add(entity: Entity<any>) {
+  add(entity: Entity) {
     this.app.stage.addChild(entity.sprite);
   }
 
-  remove(entity: Entity<any>) {
+  remove(entity: Entity) {
     this.app.stage.removeChild(entity.sprite);
+    entity.sprite.destroy();
   }
 }

@@ -1,30 +1,52 @@
 import { Application, TickerCallback } from "pixi.js";
 
 import { Controller } from "./Controller";
-import { Entity } from "../../entities/entity/Entity";
-import { angleCoords, randomAngle, randomBool } from "../../utils/math";
+import { Person } from "../../entities/person/Person";
+import { angleCoords, randomAngle, randomBool, minMax } from "../../utils/math";
 
 export class BotController extends Controller {
   private func: TickerCallback<any> | undefined;
   private movementDirection = randomAngle();
+  private isShooting = false;
+  private minDistance = 50;
+  private maxDistance = 300;
+  private curDistance: number | undefined;
+  private distanceVariance = 10;
 
   constructor(app: Application) {
     super(app);
   }
 
-  assign(entity: Entity) {
+  assign(person: Person) {
     if (this.func) {
       throw new Error("Controller already in use");
     }
     this.func = () => {
-      if (randomBool(0.010))
-        entity.sprite.rotation = randomAngle();
       if (randomBool(0.005))
         this.movementDirection = randomAngle();
       const speed = 0.3;
-      const {x, y} = angleCoords(this.movementDirection);
-      entity.sprite.x += x * speed;
-      entity.sprite.y += y * speed;
+      const mxy = angleCoords(this.movementDirection);
+      person.sprite.x += mxy.x * speed;
+      person.sprite.y += mxy.y * speed;
+
+      if (randomBool(0.005)) {
+        if (this.isShooting) {
+          person.stopShooting()
+          this.curDistance = undefined;
+        } else {
+          this.curDistance = Math.random() * (this.maxDistance - this.minDistance) + this.minDistance;
+        }
+        this.isShooting = !this.isShooting;
+      }
+      if (randomBool(0.010))
+        person.sprite.rotation = randomAngle();
+      const rxy = angleCoords(person.sprite.rotation);
+      if (this.isShooting)
+        this.curDistance = minMax(this.minDistance, this.curDistance! + (Math.random() - 0.5) * 2 * this.distanceVariance, this.maxDistance);
+        person.shoot({
+          x: person.sprite.x + rxy.x * this.curDistance!,
+          y: person.sprite.y + rxy.y * this.curDistance!
+        });
     };
     this.app.ticker.add(this.func);
   }

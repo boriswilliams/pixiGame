@@ -53,15 +53,15 @@ async function spawnEnemy(factory: EnemyFactory, app: Application, spawner: Spaw
 
   const player = await friendlyFactory.build();
   playerController.assign(player);
-  player.giveGun(await dartRifleFactory.build());
+  player.giveGun(await bBGunFactory.build());
   
   player.sprite.position.set(app.screen.width / 2, app.screen.height / 2);
   spawner.add(player);
 
   const enemyFactory = new EnemyFactory();
-  for (let _ = 0; _ < 10; _++) {
+  for (let _ = 0; _ < 1; _++) {
     spawnEnemy(enemyFactory, app, spawner, dartRifleFactory);
-    spawnEnemy(enemyFactory, app, spawner, bBGunFactory);
+    // spawnEnemy(enemyFactory, app, spawner, bBGunFactory);
     spawnEnemy(enemyFactory, app, spawner, lightGunFactory);
   }
 })();

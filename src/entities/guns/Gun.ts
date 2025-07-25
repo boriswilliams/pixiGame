@@ -37,7 +37,7 @@ export abstract class Gun<P extends Projectile<P>> extends Entity {
     }
   }
 
-  async shoot(parent: Sprite, mouseLocation: Coords) {
+  async shoot(parent: Sprite, location: Coords) {
     if (this.lastShot && Date.now() < this.lastShot + this.fireGap)
       return;
     if (this.lastShot)
@@ -48,7 +48,7 @@ export abstract class Gun<P extends Projectile<P>> extends Entity {
     const y = parent.y - this.gunLength * Math.cos(parent.rotation);
     const spawn = {x: x, y: y};
     for (let _ = 0; _ < this.shots; _++) {
-      const projectile = await this.projectileFactory.build(spawn, this.applyVariance(mouseLocation, distance(spawn, mouseLocation)));
+      const projectile = await this.projectileFactory.build(spawn, this.applyVariance(location, distance(spawn, location)));
       projectile.sprite.position.set(x, y);
       projectile.sprite.rotation = parent.rotation;
       this.spawner.add(projectile)

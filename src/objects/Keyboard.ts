@@ -32,18 +32,18 @@ export class Keyboard extends Object {
       const { x, y } = angleCoords(entity.sprite.rotation);
       if (this.keys.w) {
         entity.sprite.x += x*travel;
-        entity.sprite.y -= y*travel;
+        entity.sprite.y += y*travel;
       }
       if (this.keys.s) {
         entity.sprite.x -= x*travel;
-        entity.sprite.y += y*travel;
+        entity.sprite.y -= y*travel;
       }
       if (this.keys.a) {
-        entity.sprite.x -= y*travel;
+        entity.sprite.x += y*travel;
         entity.sprite.y -= x*travel;
       }
       if (this.keys.d) {
-        entity.sprite.x += y*travel;
+        entity.sprite.x -= y*travel;
         entity.sprite.y += x*travel;
       }
     });
