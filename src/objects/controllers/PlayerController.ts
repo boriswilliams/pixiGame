@@ -3,10 +3,10 @@ import { Application } from "pixi.js";
 import { Mouse } from "../Mouse";
 import { Keyboard } from "../Keyboard";
 
-import { Object } from "../Object";
+import { Controller } from "./Controller";
 import { Entity } from "../../entities/entity/Entity";
 
-export class PlayerController extends Object {
+export class PlayerController extends Controller {
   mouse: Mouse;
   keyboard: Keyboard;
 

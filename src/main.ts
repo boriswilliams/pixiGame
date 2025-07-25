@@ -1,5 +1,7 @@
 import App from "./screen/app";
 
+import { Coords } from "./utils/types";
+
 import { Spawner } from "./objects/Spawner";
 import { Mouse } from "./objects/Mouse";
 import { Keyboard } from "./objects/Keyboard";
@@ -12,7 +14,6 @@ import { DartRifleFactory } from "./entities/guns/DartRifle";
 import { DartFactory } from "./entities/projectiles/Dart";
 import { LightGunFactory } from "./entities/guns/LightGun";
 import { LightFactory } from "./entities/projectiles/Light";
-import { Coords } from "./utils/types";
 import { BBGunFactory } from "./entities/guns/BBGun";
 import { PelletFactory } from "./entities/projectiles/Pellet";
 
