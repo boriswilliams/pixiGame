@@ -9,7 +9,7 @@ import { Tickers } from "./objects/Tickers";
 
 import { PlayerController } from "./objects/controllers/PlayerController";
 
-import { BoiFactory } from "./entities/Boi";
+import { FriendlyFactory } from "./entities/person/Friendly";
 import { DartRifleFactory } from "./entities/guns/DartRifle";
 import { DartFactory } from "./entities/projectiles/Dart";
 import { LightGunFactory } from "./entities/guns/LightGun";
@@ -19,8 +19,9 @@ import { PelletFactory } from "./entities/projectiles/Pellet";
 import { BotController } from "./objects/controllers/BotController";
 import { Application } from "pixi.js";
 import { GunFactory } from "./entities/guns/Gun";
+import { EnemyFactory } from "./entities/person/Enemy";
 
-async function spawnEnemy(factory: BoiFactory, app: Application, spawner: Spawner, gunFactory: GunFactory<any, any>) {
+async function spawnEnemy(factory: EnemyFactory, app: Application, spawner: Spawner, gunFactory: GunFactory<any, any>) {
   const enemy = await factory.build();
   enemy.addController(new BotController(app));
   enemy.giveGun(await gunFactory.build());
@@ -48,18 +49,19 @@ async function spawnEnemy(factory: BoiFactory, app: Application, spawner: Spawne
   const lightFactory = new LightFactory(tickers);
   const lightGunFactory = new LightGunFactory(lightFactory, spawner);
 
-  const boiFactory = new BoiFactory();
+  const friendlyFactory = new FriendlyFactory();
 
-  const boi = await boiFactory.build();
-  playerController.assign(boi);
-  boi.giveGun(await dartRifleFactory.build());
+  const player = await friendlyFactory.build();
+  playerController.assign(player);
+  player.giveGun(await dartRifleFactory.build());
   
-  boi.sprite.position.set(app.screen.width / 2, app.screen.height / 2);
-  spawner.add(boi);
+  player.sprite.position.set(app.screen.width / 2, app.screen.height / 2);
+  spawner.add(player);
 
+  const enemyFactory = new EnemyFactory();
   for (let _ = 0; _ < 10; _++) {
-    spawnEnemy(boiFactory, app, spawner, dartRifleFactory);
-    spawnEnemy(boiFactory, app, spawner, bBGunFactory);
-    spawnEnemy(boiFactory, app, spawner, lightGunFactory);
+    spawnEnemy(enemyFactory, app, spawner, dartRifleFactory);
+    spawnEnemy(enemyFactory, app, spawner, bBGunFactory);
+    spawnEnemy(enemyFactory, app, spawner, lightGunFactory);
   }
 })();

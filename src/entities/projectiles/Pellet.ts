@@ -9,7 +9,9 @@ export class Pellet extends Dropping<Pellet> {
 
 export class PelletFactory extends DroppingFactory<Pellet, []> {
   constructor(tickers: Tickers, spawner: Spawner, deadtime: number) {
-    super(Pellet, tickers, spawner, 10, deadtime, '/assets/pellet.png');
+    super(Pellet, tickers, spawner,
+      10, // speed
+      deadtime, '/assets/pellet.png');
   }
 
   async build(spawn: Coords, destination: Coords) {
