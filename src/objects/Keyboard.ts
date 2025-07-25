@@ -15,7 +15,7 @@ export class Keyboard extends Object {
     window.addEventListener('keyup', (e) => this.keys[e.key] = false);
   }
 
-  moveWasd(entity: Entity<any>, speed: number) {
+  moveWasd(entity: Entity, speed: number) {
     this.app.ticker.add((time) => {
       const travel = time.deltaTime * speed;
       if (this.keys.w) entity.sprite.y -= travel;

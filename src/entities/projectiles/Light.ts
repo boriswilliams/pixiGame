@@ -1,5 +1,6 @@
 import { Tickers } from '../../objects/Tickers';
 import { Coords } from '../../utils/types';
+import { SCALE } from '../../values';
 import { Horizontal, HorizontalFactory } from './Projectile/Horizontal';
 
 export class Light extends Horizontal<Light> {
@@ -8,7 +9,7 @@ export class Light extends Horizontal<Light> {
 
 export class LightFactory extends HorizontalFactory<Light, []> {
   constructor(tickers: Tickers) {
-    super(Light, tickers, 50, '/assets/light.png');
+    super(Light, tickers, 50/SCALE, '/assets/light.png');
   }
 
   async build(spawn: Coords, destination: Coords) {
