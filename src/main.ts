@@ -31,7 +31,7 @@ import { Coords } from "./utils/types";
   const boi = await boiFactory.build();
   keyboard.moveWasd(boi, 6);
   mouse.lookAtMouse(boi);
-  boi.giveGun(await dartRifleFactory.build());
+  boi.giveGun(await lightGunFactory.build());
 
   mouse.setHoldAction((location: Coords) => boi.shoot(location));
   

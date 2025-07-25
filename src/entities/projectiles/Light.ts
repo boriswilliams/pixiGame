@@ -9,7 +9,7 @@ export class Light extends Horizontal<Light> {
 
 export class LightFactory extends HorizontalFactory<Light, []> {
   constructor(tickers: Tickers) {
-    super(Light, tickers, 50/SCALE, '/assets/light.png');
+    super(Light, tickers, 40/SCALE, '/assets/light.png');
   }
 
   async build(spawn: Coords, destination: Coords) {
