@@ -5,6 +5,8 @@ import { Mouse } from "./objects/Mouse";
 import { Keyboard } from "./objects/Keyboard";
 import { Tickers } from "./objects/Tickers";
 
+import { PlayerController } from "./objects/controllers/PlayerController";
+
 import { BoiFactory } from "./entities/Boi";
 import { DartRifleFactory } from "./entities/guns/DartRifle";
 import { DartFactory } from "./entities/projectiles/Dart";
@@ -22,6 +24,8 @@ import { PelletFactory } from "./entities/projectiles/Pellet";
   const keyboard = new Keyboard(app);
   const tickers = new Tickers(app);
 
+  const playerController = new PlayerController(app, mouse, keyboard);
+
   const dartFactory = new DartFactory(tickers, spawner, 1);
   const dartRifleFactory = new DartRifleFactory(dartFactory, spawner);
 
@@ -34,8 +38,7 @@ import { PelletFactory } from "./entities/projectiles/Pellet";
   const boiFactory = new BoiFactory();
 
   const boi = await boiFactory.build();
-  keyboard.moveWasdRelative(boi, 6);
-  mouse.lookAtMouse(boi);
+  playerController.assign(boi);
   boi.giveGun(await dartRifleFactory.build());
 
   mouse.setHoldAction((mouseLocation: Coords) => boi.shoot(mouseLocation), () => boi.stopShooting());
