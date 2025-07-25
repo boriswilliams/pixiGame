@@ -7,7 +7,7 @@ import { Spawner } from '../../objects/Spawner';
 import { Class } from '../utils/Class';
 import { Factory } from '../entity/Factory';
 import { Coords } from '../../utils/types';
-import { angleCoords, distance, exponentialRandom, pythag } from '../../utils/math';
+import { angleCoords, distance, exponentialRandom } from '../../utils/math';
 
 export abstract class Gun<P extends Projectile<P>> extends Entity {
   projectileFactory: ProjectileFactory<P, any>;
