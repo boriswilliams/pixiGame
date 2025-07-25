@@ -4,7 +4,7 @@ import { Mouse } from "../Mouse";
 import { Keyboard } from "../Keyboard";
 
 import { Controller } from "./Controller";
-import { Friendly } from "../../entities/person/Friendly";
+import { Person } from "../../entities/person/Person";
 import { Coords } from "../../utils/types";
 
 export class PlayerController extends Controller {
@@ -18,13 +18,13 @@ export class PlayerController extends Controller {
     this.keyboard = keyboard;
   }
 
-  assign(entity: Friendly) {
+  assign(entity: Person) {
     this.mouse.lookAtMouse(entity);
     this.mouse.setHoldAction((mouseLocation: Coords) => entity.shoot(mouseLocation), () => entity.stopShooting());
     this.keyboard.moveWasdRelative(entity, 6);
   }
     
-  remove(entity: Friendly) {
+  remove(entity: Person) {
     console.error(entity);
     // TODO
   }
