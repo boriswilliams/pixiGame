@@ -51,8 +51,8 @@ function makeWorld(app: Application, camera: Container) {
   const pointerFactory = new PointerFactory();
 
   const spawner = new Spawner(world);
-  const relativeMouse = new RelativeMouse(app, await pointerFactory.build(), camera, world);
-  const relativeKeyboard = new RelativeKeyboard(app, world);
+  // const relativeMouse = new RelativeMouse(app, await pointerFactory.build(), camera, world);
+  // const relativeKeyboard = new RelativeKeyboard(app, world);
   const absoluteMouse = new AbsoluteMouse(app, await pointerFactory.build(), camera, world);
   const absoluteKeyboard = new AbsoluteKeyboard(app, world);
   const tickers = new Tickers(app);

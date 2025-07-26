@@ -9,7 +9,7 @@ export abstract class Mouse extends Object {
   pointer: Pointer;
   camera: Container;
   world: Container;
-  clickHeld: boolean;
+  clickHeld = false;
   holdAction: (() => void) | undefined;
 
   constructor(app: Application, pointer: Pointer, camera: Container, world: Container) {
@@ -19,7 +19,7 @@ export abstract class Mouse extends Object {
     this.camera = camera;
     this.world = world;
 
-    this.clickHeld = false;
+    app.stage.addChild(pointer.sprite);
     this.app.view.addEventListener('pointerdown', (event) => {
       if (event.button === 0) {
         this.clickHeld = true;
@@ -40,7 +40,7 @@ export abstract class Mouse extends Object {
 
   abstract addRotationTicker(entity: Entity): void;
 
-  protected abstract getTarget(entity: Entity): Coords;
+  protected abstract getTarget(entity?: Entity): Coords;
 
   setHoldAction(entity: Entity, start: (target: Coords) => void, stop: () => void) {
     this.removeHoldAction();
