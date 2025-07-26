@@ -1,19 +1,20 @@
-import { Application } from "pixi.js";
+import { Container } from "pixi.js";
 
-import { Object } from "./Object";
 import { Entity } from "../entities/entity/Entity";
 
-export class Spawner extends Object {
-  constructor(app: Application) {
-    super(app);
+export class Spawner {
+  container: Container;
+
+  constructor(container: Container) {
+    this.container = container;
   }
 
   add(entity: Entity) {
-    this.app.stage.addChild(entity.sprite);
+    this.container.addChild(entity.sprite);
   }
 
   remove(entity: Entity) {
-    this.app.stage.removeChild(entity.sprite);
+    this.container.removeChild(entity.sprite);
     entity.sprite.destroy();
   }
 }

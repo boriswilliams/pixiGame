@@ -1,14 +1,17 @@
-import { Application } from "pixi.js";
+import { Application, Container, Ticker } from "pixi.js";
 
-import { Object } from "./Object";
-import { Entity } from "../entities/entity/Entity";
-import { angleCoords } from "../utils/math";
+import { Object } from "../Object";
+import { Entity } from "../../entities/entity/Entity";
+import { angleCoords } from "../../utils/math";
 
-export class Keyboard extends Object {
+export abstract class Keyboard extends Object {
   keys: {[key: string]: boolean};
+  world: Container;
 
-  constructor(app: Application) {
+  constructor(app: Application, world: Container) {
     super(app);
+    
+    this.world = world;
 
     this.keys = {};
     
@@ -16,18 +19,8 @@ export class Keyboard extends Object {
     window.addEventListener('keyup', (e) => this.keys[e.key] = false);
   }
 
-  moveWasdAbsolute(entity: Entity, speed: number) {
-    this.app.ticker.add((time) => {
-      const travel = time.deltaTime * speed;
-      if (this.keys.w) entity.sprite.y -= travel;
-      if (this.keys.s) entity.sprite.y += travel;
-      if (this.keys.a) entity.sprite.x -= travel;
-      if (this.keys.d) entity.sprite.x += travel;
-    });
-  }
-
-  moveWasdRelative(entity: Entity, speed: number) {
-    this.app.ticker.add((time) => {
+  protected getRelativeMoveFunction(entity: Entity, speed: number) {
+    return (time: Ticker) => {
       const travel = time.deltaTime * speed;
       const { x, y } = angleCoords(entity.sprite.rotation);
       if (this.keys.w) {
@@ -46,6 +39,13 @@ export class Keyboard extends Object {
         entity.sprite.x -= y*travel;
         entity.sprite.y += x*travel;
       }
-    });
+    };
   }
+  
+  protected track(entity: Entity) {
+    this.world.x = -entity.sprite.x;
+    this.world.y = -entity.sprite.y;
+  }
+
+  abstract addMovementTicker(entity: Entity, speed: number): void;
 }

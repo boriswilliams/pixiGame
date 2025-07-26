@@ -7,7 +7,11 @@ export function pythag(x: number, y: number) {
 }
 
 export function angle(dy: number, dx: number) {
-  return Math.atan2(dy, dx) + Math.PI/2;
+  return angleNotWeird(dy, dx) + Math.PI/2;
+}
+
+export function angleNotWeird(y: number, x: number) {
+  return Math.atan2(y, x);
 }
 
 export const randomAngle = () => Math.random() * Math.PI * 2;

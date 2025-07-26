@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
 
-import { Mouse } from "../Mouse";
-import { Keyboard } from "../Keyboard";
+import { Mouse } from "../mouse/Mouse";
+import { Keyboard } from "../keyboard/Keyboard";
 
 import { Controller } from "./Controller";
 import { Person } from "../../entities/person/Person";
@@ -19,9 +19,9 @@ export class PlayerController extends Controller {
   }
 
   assign(entity: Person) {
-    this.mouse.lookAtMouse(entity);
-    this.mouse.setHoldAction((mouseLocation: Coords) => entity.shoot(mouseLocation), () => entity.stopShooting());
-    this.keyboard.moveWasdRelative(entity, 6);
+    this.mouse.addRotationTicker(entity);
+    this.mouse.setHoldAction(entity, (mouseLocation: Coords) => entity.shoot(mouseLocation), () => entity.stopShooting());
+    this.keyboard.addMovementTicker(entity, 6);
   }
     
   remove(entity: Person) {
