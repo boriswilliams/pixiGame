@@ -21,7 +21,7 @@ export class PlayerController extends Controller {
   assign(entity: Person) {
     this.mouse.addRotationTicker(entity);
     this.mouse.setHoldAction(entity, (mouseLocation: Coords) => entity.shoot(mouseLocation), () => entity.stopShooting());
-    this.keyboard.addMovementTicker(entity, 6);
+    this.keyboard.addMovementTicker(entity, 3);
   }
     
   remove(entity: Person) {

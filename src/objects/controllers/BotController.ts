@@ -1,4 +1,4 @@
-import { Application, TickerCallback } from "pixi.js";
+import { Application, Ticker, TickerCallback } from "pixi.js";
 
 import { Controller } from "./Controller";
 import { Person } from "../../entities/person/Person";
@@ -21,10 +21,10 @@ export class BotController extends Controller {
     if (this.func) {
       throw new Error("Controller already in use");
     }
-    this.func = () => {
+    this.func = (time: Ticker) => {
       if (randomBool(0.005))
         this.movementDirection = randomAngle();
-      const speed = 0.3;
+      const speed = 3 * time.deltaTime;
       const mxy = angleCoords(this.movementDirection);
       person.sprite.x += mxy.x * speed;
       person.sprite.y += mxy.y * speed;
