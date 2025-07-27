@@ -57,22 +57,26 @@ export class PlayerController extends Controller {
   }
   
   mousedown = (e: MouseEvent) => {
-    if (e.button == 0) {
-      this.isShooting = true;
-    }
-    if (e.button == 2) {
-      this.scoped = true;
-      this.relative = true;
+    switch (e.button) {
+      case 0:
+        this.isShooting = true;
+        break;
+      case 2:
+        this.scoped = true;
+        this.relative = true;
+        break;
     }
   }
 
   mouseup = (e: MouseEvent) => {
-    if (e.button == 0) {
-      this.isShooting = false;
-    }
-    if (e.button == 2) {
-      this.scoped = false;
-      this.relative = false;
+    switch (e.button) {
+      case 0:
+        this.isShooting = false;
+        break;
+      case 2:
+        this.scoped = false;
+        this.relative = false;
+        break;
     }
   }
 
