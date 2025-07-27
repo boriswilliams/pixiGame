@@ -151,8 +151,7 @@ export class PlayerController extends Controller {
     }
   }
 
-  pointerlockchange = (e: Event) => {
-    console.log(e);
+  pointerlockchange = () => {
     if (document.pointerLockElement) {
       if (!this.pointerLocked) {
         this.pointerLocked = true;
