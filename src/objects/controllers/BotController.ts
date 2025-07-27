@@ -7,7 +7,6 @@ import { angleCoords, randomAngle, randomBool, minMax } from "../../utils/math";
 export class BotController extends Controller {
   private func: TickerCallback<any> | undefined;
   private movementDirection = randomAngle();
-  private isShooting = false;
   private minDistance = 50;
   private maxDistance = 300;
   private curDistance: number | undefined;
@@ -24,7 +23,7 @@ export class BotController extends Controller {
     this.func = (time: Ticker) => {
       if (randomBool(0.005))
         this.movementDirection = randomAngle();
-      const speed = 3 * time.deltaTime;
+      const speed = 1 * time.deltaTime;
       const mxy = angleCoords(this.movementDirection);
       person.sprite.x += mxy.x * speed;
       person.sprite.y += mxy.y * speed;

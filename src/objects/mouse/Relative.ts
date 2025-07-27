@@ -13,7 +13,6 @@ export class RelativeMouse extends Mouse {
   constructor(app: Application, pointer: Pointer, camera: Container, world: Container) {
     super(app, pointer, camera, world);
     
-    app.stage.addChild(pointer.sprite);
     pointer.sprite.position.set(app.screen.width / 2, this.distance);
     camera.position.set(app.screen.width / 2, app.screen.height * (1 - RELATIVE_PLAYER_POSITION));
   }

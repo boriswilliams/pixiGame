@@ -37,8 +37,6 @@ export class AbsoluteMouse extends Mouse {
       entity.sprite.rotation = this.angleToMouse(entity.sprite);
       this.pointer.sprite.x = this.target.x;
       this.pointer.sprite.y = this.target.y;
-      console.log(this.pointer.sprite.x);
-      console.log(this.pointer.sprite.y);
     });
   }
 }

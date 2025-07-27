@@ -1,3 +1,5 @@
+import { Sprite } from "pixi.js";
+
 import { Coords } from "./types";
 
 export const exponentialRandom = () => -Math.log(1 - Math.random());
@@ -52,6 +54,21 @@ export const angleCoords = (a: number) => ({
   x: Math.sin(a),
   y: -Math.cos(a)
 })
+
+export function vectorAdd(a: Coords, b: Coords) {
+  a.x += b.x;
+  a.y += b.y;
+}
+
+export function vectorSub(a: Coords, b: Coords) {
+  a.x -= b.x;
+  a.y -= b.y;
+}
+
+export function vectorScale(a: Coords, x: number) {
+  a.x *= x;
+  a.y *= x;
+}
 
 // Trajectory
 
