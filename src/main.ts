@@ -30,9 +30,6 @@ async function spawnEnemy(factory: EnemyFactory, app: Application, spawner: Spaw
 (async () => {
   // Setup app
   const app = await App();
-  app.canvas.addEventListener('click', () => {
-    app.canvas.requestPointerLock();
-  });
 
   const camera = new Container();
   app.stage.addChild(camera);

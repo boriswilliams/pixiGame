@@ -1,5 +1,3 @@
-import { Sprite } from "pixi.js";
-
 import { Coords } from "./types";
 
 export const exponentialRandom = () => -Math.log(1 - Math.random());

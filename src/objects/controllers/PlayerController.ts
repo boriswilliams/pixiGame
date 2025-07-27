@@ -18,6 +18,8 @@ export class PlayerController extends Controller {
 
   person: Person | undefined;
 
+  pointerLocked = false;
+
   relative = false;
   keys: {[key: string]: boolean} = {};
   scoped = false;
@@ -30,8 +32,6 @@ export class PlayerController extends Controller {
     this.world = world;
     this.tickers = tickers;
     this.pointer = pointer;
-
-    this.keys;
   }
 
   move(a: Coords) {
@@ -141,30 +141,59 @@ export class PlayerController extends Controller {
     this.pointer.sprite.position.set(crosshair.x, crosshair.y);
   }
 
+  click = (e: MouseEvent) => {
+    if (!this.pointerLocked) {
+      this.target = this.world.toLocal({
+        x: e.clientX,
+        y: e.clientY
+      });;
+      this.app.canvas.requestPointerLock();
+    }
+  }
+
+  pointerlockchange = (e: Event) => {
+    console.log(e);
+    if (document.pointerLockElement) {
+      if (!this.pointerLocked) {
+        this.pointerLocked = true;
+
+        this.app.stage.addChild(this.pointer.sprite);
+
+        document.onkeydown = this.keydown;
+        document.onkeyup = this.keyup;
+        document.onmousedown = this.mousedown;
+        document.onmouseup = this.mouseup;
+        document.onmousemove = this.mousemove;
+
+        this.tickers.add(this.ticker);
+      }
+    } else {
+      if (this.pointerLocked) {
+        this.pointerLocked = false;
+
+        this.app.stage.removeChild(this.pointer.sprite);
+
+        document.onkeydown = null;
+        document.onkeyup = null;
+        document.onmousedown = null;
+        document.onmouseup = null;
+        document.onmousemove = null;
+
+        this.tickers.remove(this.ticker);
+      }
+    }
+  }
 
   assign(person: Person): void {
     this.person = person;
 
-    this.app.stage.addChild(this.pointer.sprite);
-    this.pointer.sprite.position.set(this.app.screen.width / 2, this.app.screen.height / 2);
-
-    window.addEventListener('keydown', this.keydown);
-    window.addEventListener('keyup', this.keyup);
-    window.addEventListener('mousedown', this.mousedown);
-    window.addEventListener('mouseup', this.mouseup);
-    window.addEventListener('mousemove', this.mousemove);
-    this.tickers.add(this.ticker);
+    this.app.canvas.addEventListener('click', this.click);
+    document.onpointerlockchange = this.pointerlockchange;
   }
 
   remove(): void {
-    this.app.stage.removeChild(this.pointer.sprite);
-
-    window.removeEventListener('keydown', this.keydown);
-    window.removeEventListener('keyup', this.keyup);
-    window.removeEventListener('mousedown', this.mousedown);
-    window.removeEventListener('mouseup', this.mouseup);
-    window.removeEventListener('mousemove', this.mousemove);
-    this.tickers.remove(this.ticker);
+    this.app.canvas.removeEventListener('click', this.click);
+    document.onpointerlockchange = null;
 
     this.person = undefined;
   }
