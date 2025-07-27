@@ -18,6 +18,8 @@ import { PelletFactory } from "./entities/projectiles/Pellet";
 import { GunFactory } from "./entities/guns/Gun";
 import { EnemyFactory } from "./entities/person/Enemy";
 import { PointerFactory } from "./entities/pointer"
+import { SniperFactory } from "./entities/guns/Sniper";
+import { Bullet50Factory } from "./entities/projectiles/Bullet50";
 
 async function spawnEnemy(factory: EnemyFactory, app: Application, spawner: Spawner, gunFactory: GunFactory<any, any>) {
   const enemy = await factory.build();
@@ -52,13 +54,16 @@ async function spawnEnemy(factory: EnemyFactory, app: Application, spawner: Spaw
   const lightFactory = new LightFactory(tickers);
   const lightGunFactory = new LightGunFactory(lightFactory, spawner);
 
+  const bullet50Factory = new Bullet50Factory(tickers, spawner, 5);
+  const sniperFactory = new SniperFactory(bullet50Factory, spawner);
+
   // Prepare Player
   const pointerFactory = new PointerFactory();
   const friendlyFactory = new FriendlyFactory();
   
   const playerController = new PlayerController(app, camera, world, tickers, await pointerFactory.build());
   const player = await friendlyFactory.build();
-  player.giveGun(await bBGunFactory.build());
+  player.giveGun(await lightGunFactory.build());
   playerController.assign(player);
   
   player.sprite.position.set(0, 0);
