@@ -7,6 +7,7 @@ export function pythag(x: number, y: number) {
 }
 
 export function angle(y: number, x: number) {
+  // Reworked so that 0 is up
   return Math.atan2(x, -y);
 }
 
