@@ -36,7 +36,7 @@ export abstract class DroppingFactory<D extends Dropping<D>, A extends any[]> ex
         const scale = 1 + x * trajectory(travelled / projectile.distance);
         projectile.sprite.scale = scale;
 
-        const travel = ticker.deltaTime * speed * (0.4 + projectile.distance/200);
+        const travel = ticker.elapsedMS / 17 * speed * (0.4 + projectile.distance/200);
         const { rx, ry } = ratioXY(projectile.destination, projectile.spawn);
         const newCoords = {
           x: oldCoords.x + travel * rx,

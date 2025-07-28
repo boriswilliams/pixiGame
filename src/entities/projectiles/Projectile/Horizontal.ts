@@ -22,7 +22,7 @@ export abstract class HorizontalFactory<H extends Horizontal<H>, A extends any[]
   ) {
     const projectileAnimation = (projectile: Horizontal<H>) => {
       const movement = (ticker: Ticker) => {
-        const travel = ticker.deltaTime * speed;
+        const travel = ticker.elapsedMS / 17 * speed;
         projectile.sprite.y -= travel * Math.cos(projectile.sprite.rotation);
         projectile.sprite.x += travel * Math.sin(projectile.sprite.rotation);
       }

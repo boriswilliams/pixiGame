@@ -6,12 +6,8 @@ export function pythag(x: number, y: number) {
   return Math.sqrt(x**2 + y**2)
 }
 
-export function angle(dy: number, dx: number) {
-  return angleNotWeird(dy, dx) + Math.PI/2;
-}
-
-export function angleNotWeird(y: number, x: number) {
-  return Math.atan2(y, x);
+export function angle(y: number, x: number) {
+  return Math.atan2(x, -y);
 }
 
 export const randomAngle = () => Math.random() * Math.PI * 2;

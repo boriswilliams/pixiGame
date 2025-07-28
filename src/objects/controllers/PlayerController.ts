@@ -3,12 +3,14 @@ import { Application, Container, Ticker } from "pixi.js";
 import { Controller } from "./Controller";
 import { Pointer } from "../../entities/pointer";
 import { Person } from "../../entities/person/Person";
-import { angleCoords, coordsAngle, vectorAdd, vectorScale } from "../../utils/math";
+import { angleCoords, coordsAngle, minMax, vectorAdd, vectorScale } from "../../utils/math";
 import { Tickers } from "../Tickers";
 import { Coords } from "../../utils/types";
 import { RELATIVE_PLAYER_POSITION } from "../../values";
 
 const MOVEMENT_SPEED = 3;
+const RELATIVE_TIME = 400;
+const SCOPE_TIME = 400;
 
 export class PlayerController extends Controller {
   camera: Container;
@@ -21,8 +23,10 @@ export class PlayerController extends Controller {
   pointerLocked = false;
 
   relative = false;
-  keys: {[key: string]: boolean} = {};
+  relativeness = 0;
   scoped = false;
+  scopedness = 0;
+  keys: {[key: string]: boolean} = {};
   target = { x: 0, y: 0 }
 
   constructor(app: Application, camera: Container, world: Container, tickers: Tickers, pointer: Pointer) {
@@ -85,8 +89,14 @@ export class PlayerController extends Controller {
     vectorAdd(this.target, a);
   }
 
+  private transition(frameTime: number, state: boolean, durationMs: number, value: number) {
+    return minMax(0, value + (state ? 1 : -1) * frameTime/durationMs, 1);
+  }
+
   ticker = (time: Ticker) => {
-    const deltaTime = time.deltaTime;
+    // Transition moving values
+    this.relativeness = this.transition(time.elapsedMS, this.relative, RELATIVE_TIME, this.relativeness);
+    this.scopedness = this.transition(time.elapsedMS, this.scoped, SCOPE_TIME, this.scopedness);
     
     // Shoot
     if (this.isShooting) {
@@ -97,14 +107,10 @@ export class PlayerController extends Controller {
     this.person!.sprite.rotation = coordsAngle(this.target, this.person!.sprite);
 
     // Rotate camera
-    if (this.relative) {
-      this.camera.rotation = -this.person!.sprite.rotation;
-    } else {
-      this.camera.rotation = 0;
-    }
+    this.camera.rotation = -this.person!.sprite.rotation * this.relativeness;
 
     // Move
-    const travel = deltaTime * MOVEMENT_SPEED;
+    const travel = time.elapsedMS / 17 * MOVEMENT_SPEED;
     const dir = { x: 0, y: 0 };
     if (this.keys.w)
       dir.y -= 1;
@@ -121,20 +127,12 @@ export class PlayerController extends Controller {
     }
 
     // Translate camera
-    if (this.scoped) {
-      this.world.x = -this.target.x;
-      this.world.y = -this.target.y;
-    } else {
-      this.world.x = -this.person!.sprite.x;
-      this.world.y = -this.person!.sprite.y;
-      if (this.relative) {
-        const a = this.transform({
-          x: 0,
-          y: this.app.screen.height * (1/2 - RELATIVE_PLAYER_POSITION)
-        })
-        vectorAdd(this.world, a);
-      }
-    }
+    const lowerPlayer = this.transform({
+      x: 0,
+      y: this.app.screen.height * (1/2 - RELATIVE_PLAYER_POSITION)
+    })
+    this.world.x = (-this.target.x * this.scopedness) + ((-this.person!.sprite.x + lowerPlayer.x * this.relativeness) * (1 - this.scopedness));
+    this.world.y = (-this.target.y * this.scopedness) + ((-this.person!.sprite.y + lowerPlayer.y * this.relativeness) * (1 - this.scopedness));
 
     // Set crosshair location
     const crosshair = this.world.toGlobal(this.target);
@@ -185,6 +183,8 @@ export class PlayerController extends Controller {
 
   assign(person: Person): void {
     this.person = person;
+
+    person.sprite.rotation = 0;
 
     this.app.canvas.addEventListener('click', this.click);
     document.onpointerlockchange = this.pointerlockchange;
