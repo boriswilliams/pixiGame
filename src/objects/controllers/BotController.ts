@@ -7,8 +7,8 @@ import { angleCoords, randomAngle, randomBool, minMax } from "../../utils/math";
 export class BotController extends Controller {
   private func: TickerCallback<any> | undefined;
   private movementDirection = randomAngle();
-  private minDistance = 50;
-  private maxDistance = 300;
+  private minDistance = 50 * 0 + 1;
+  private maxDistance = 300 * 0 + 5;
   private curDistance: number | undefined;
   private distanceVariance = 10;
 

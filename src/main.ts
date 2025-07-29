@@ -48,7 +48,7 @@ async function spawnEnemy(factory: EnemyFactory, app: Application, spawner: Spaw
   const dartFactory = new DartFactory(tickers, spawner, 1);
   const dartRifleFactory = new DartRifleFactory(dartFactory, spawner);
 
-  const pelletFactory = new PelletFactory(tickers, spawner, 0.1);
+  const pelletFactory = new PelletFactory(tickers, spawner, 0.01);
   const bBGunFactory = new BBGunFactory(pelletFactory, spawner);
 
   const lightFactory = new LightFactory(tickers);
@@ -63,7 +63,7 @@ async function spawnEnemy(factory: EnemyFactory, app: Application, spawner: Spaw
   
   const playerController = new PlayerController(app, camera, world, tickers, await pointerFactory.build());
   const player = await friendlyFactory.build();
-  player.giveGun(await lightGunFactory.build());
+  player.giveGun(await bBGunFactory.build());
   playerController.assign(player);
   
   player.sprite.position.set(0, 0);
@@ -71,9 +71,9 @@ async function spawnEnemy(factory: EnemyFactory, app: Application, spawner: Spaw
 
   // Prepare enemies
   const enemyFactory = new EnemyFactory();
-  for (let _ = 0; _ < 1; _++) {
-    spawnEnemy(enemyFactory, app, spawner, dartRifleFactory);
+  for (let _ = 0; _ < 2; _++) {
+    // spawnEnemy(enemyFactory, app, spawner, dartRifleFactory);
     // spawnEnemy(enemyFactory, app, spawner, bBGunFactory);
-    spawnEnemy(enemyFactory, app, spawner, lightGunFactory);
+    // spawnEnemy(enemyFactory, app, spawner, lightGunFactory);
   }
 })();

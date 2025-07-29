@@ -18,6 +18,7 @@ export abstract class Entity {
 
   private makeSprite(texture: Texture) {
     const sprite = new Sprite(texture);
+    sprite.label = 'Entity';
     sprite.anchor.set(0.5);
     return sprite;
   }
@@ -51,7 +52,7 @@ export abstract class Entity {
     if (!this.controller) {
       throw new Error("Trying to remove controller that doesn't exist");
     }
-    this.controller.remove(this);
+    this.controller.remove();
     this.controller = undefined;
   }
 }

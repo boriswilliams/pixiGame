@@ -11,7 +11,7 @@ export class BBGun extends Gun<Pellet> {
       15, // gunLength
       10, // variance
       25, // fireGap
-      30, // shots
+      1, // shots
       ...textures);
   }
 }

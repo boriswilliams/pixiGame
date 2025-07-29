@@ -44,7 +44,10 @@ export abstract class DroppingFactory<D extends Dropping<D>, A extends any[]> ex
         }
         if (distance(newCoords, projectile.destination) > travelled) {
           tickers.remove(movement)
-          setTimeout(() => spawner.remove(projectile), deadtime * 1000);
+          setTimeout(() => {
+            spawner.remove(projectile);
+            projectile.sprite.destroy();
+          }, deadtime * 1000);
           return;
         }
         projectile.sprite.x = newCoords.x;
