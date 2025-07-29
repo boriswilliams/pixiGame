@@ -130,9 +130,9 @@ export class PlayerController extends Controller {
     const lowerPlayer = this.transform({
       x: 0,
       y: this.app.screen.height * (1/2 - RELATIVE_PLAYER_POSITION)
-    })
-    this.world.x = (-this.target.x * this.scopedness) + ((-this.person!.sprite.x + lowerPlayer.x * this.relativeness) * (1 - this.scopedness));
-    this.world.y = (-this.target.y * this.scopedness) + ((-this.person!.sprite.y + lowerPlayer.y * this.relativeness) * (1 - this.scopedness));
+    });
+    this.world.x = (-this.target.x * this.scopedness) + ((-this.person!.sprite.x + lowerPlayer.x * Math.max(0, this.relativeness - this.scopedness)) * (1 - this.scopedness));
+    this.world.y = (-this.target.y * this.scopedness) + ((-this.person!.sprite.y + lowerPlayer.y * Math.max(0, this.relativeness - this.scopedness)) * (1 - this.scopedness));
 
     // Set crosshair location
     const crosshair = this.world.toGlobal(this.target);
